@@ -1,14 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.dashboard.DashboardFormController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.dashboard.DashboardFormController">
+   <children>
+      <StackPane prefHeight="600.0" prefWidth="1230.0">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../assets/css/dashboard.css">
+               <children>
+                  <AnchorPane fx:id="navPane" prefHeight="600.0" prefWidth="230.0" style="-fx-background-color: #374151;">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="159.0" layoutX="41.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/images/user (3).png" />
+                           </image></ImageView>
+                        <Label alignment="CENTER" layoutX="22.0" layoutY="170.0" prefHeight="30.0" prefWidth="187.0" text="Welcome" textFill="#f9fafb">
+                           <font>
+                              <Font name="Roboto Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblUser" alignment="CENTER" layoutX="44.0" layoutY="204.0" prefHeight="34.0" prefWidth="142.0" text="Admin" textFill="#f9fafb">
+                           <font>
+                              <Font name="Lato Regular" size="20.0" />
+                           </font>
+                        </Label>
+                        <Line endX="63.99998474121094" layoutX="156.0" layoutY="253.0" startX="-144.00001525878906" stroke="#f9fafb" />
+                        <Button fx:id="btnDashboard" layoutX="18.0" layoutY="279.0" mnemonicParsing="false" onAction="#btnDashboardOnAction" prefHeight="42.0" prefWidth="198.0" text="Dashboard">
+                           <graphic>
+                              <FontAwesomeIconView fill="#f9fafb" glyphName="DASHBOARD" size="20" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnAvailableRooms" layoutX="18.0" layoutY="336.0" mnemonicParsing="false" onAction="#btnAvailableRoomsOnAction" prefHeight="42.0" prefWidth="198.0" text="Available Rooms">
+                           <graphic>
+                              <FontAwesomeIconView fill="#f9fafb" glyphName="CHECK_CIRCLE" size="20" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnCustomers" layoutX="18.0" layoutY="393.0" mnemonicParsing="false" onAction="#btnCustomersOnAction" prefHeight="42.0" prefWidth="198.0" text="Customers">
+                           <graphic>
+                              <FontAwesomeIconView fill="#f9fafb" glyphName="USERS" size="20" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnLogout" layoutX="16.0" layoutY="543.0" mnemonicParsing="false" onAction="#btnLogoutOnAction" prefHeight="42.0" prefWidth="112.0" text="Logout">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/images/exit.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
 
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </AnchorPane>
+                  <AnchorPane fx:id="dashboardPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" visible="false">
+                     <children>
+                        <AnchorPane layoutX="12.0" layoutY="14.0" prefHeight="184.0" prefWidth="974.0" style="-fx-background-color: #C2D8D3; -fx-background-radius: 10px;">
+                           <children>
+                              <AnchorPane layoutX="29.0" layoutY="17.0" prefHeight="150.0" prefWidth="290.0" styleClass="card">
+                                 <children>
+                                    <FontAwesomeIconView fill="#f9fafb" glyphName="CHECK" layoutX="13.0" layoutY="83.0" size="5em" text="" />
+                                    <Label alignment="CENTER" layoutX="35.0" layoutY="95.0" prefHeight="42.0" prefWidth="222.0" text="Today's Book" textFill="#f9fafb">
+                                       <font>
+                                          <Font name="Roboto Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="dashboardBookToday" alignment="CENTER_RIGHT" layoutX="134.0" layoutY="13.0" prefHeight="27.0" prefWidth="142.0" text="0" textFill="#f9fafb" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="343.0" layoutY="17.0" prefHeight="150.0" prefWidth="290.0" styleClass="card">
+                                 <children>
+                                    <Label alignment="CENTER" layoutX="33.0" layoutY="95.0" prefHeight="42.0" prefWidth="222.0" text="Today's Income" textFill="#f9fafb">
+                                       <font>
+                                          <Font name="Roboto Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="dashboardIncomeToday" alignment="CENTER_RIGHT" layoutX="133.0" layoutY="13.0" prefHeight="27.0" prefWidth="142.0" text="  $0.0" textFill="#f9fafb" />
+                                    <FontAwesomeIconView fill="#f9fafb" glyphName="MONEY" layoutX="14.0" layoutY="80.0" size="5em" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="654.0" layoutY="17.0" prefHeight="150.0" prefWidth="290.0" styleClass="card">
+                                 <children>
+                                    <FontAwesomeIconView fill="#f9fafb" glyphName="DOLLAR" layoutX="12.0" layoutY="80.0" size="5em" />
+                                    <Label alignment="CENTER" layoutX="34.0" layoutY="93.0" prefHeight="42.0" prefWidth="222.0" text="Total Income" textFill="#f9fafb">
+                                       <font>
+                                          <Font name="Roboto Regular" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="dashboardIncomeTotal" alignment="CENTER_RIGHT" layoutX="136.0" layoutY="12.0" prefHeight="27.0" prefWidth="142.0" text="  $0.0" textFill="#f9fafb" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="15.0" layoutY="208.0" prefHeight="380.0" prefWidth="974.0" style="-fx-background-color: #C2D8D3; -fx-background-radius: 10px;">
+                           <children>
+                              <AreaChart fx:id="dashboardAreaChart" layoutX="12.0" prefHeight="380.0" prefWidth="974.4" title="Income Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                 </yAxis>
+                              </AreaChart>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="roomsPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" style="-fx-background-color: #C2D8D3;">
+                     <children>
+                        <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="575.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+                           <children>
+                              <JFXTextField fx:id="availableRooms_txtRoomNumber" layoutX="76.0" layoutY="39.0" prefHeight="30.0" prefWidth="187.0" promptText="Room number">
+                                 <font>
+                                    <Font name="Montserrat Regular" size="14.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="availableRooms_txtPrice" layoutX="76.0" layoutY="192.0" prefHeight="30.0" prefWidth="187.0" promptText="Price per night">
+                                 <font>
+                                    <Font name="Montserrat Regular" size="14.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXComboBox fx:id="availableRooms_comboRoomType" focusColor="#537e90" layoutX="76.0" layoutY="89.0" prefHeight="30.0" prefWidth="187.0" promptText="Room type" />
+                              <JFXComboBox fx:id="availableRooms_comboStatus" focusColor="#537e90" layoutX="76.0" layoutY="141.0" prefHeight="30.0" prefWidth="187.0" promptText="Availability status" />
+                              <JFXButton fx:id="btnAdd" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="279.0" onAction="#btnAddOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Add" />
+                              <JFXButton fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" layoutX="188.0" layoutY="279.0" onAction="#btnUpdateOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Update" />
+                              <JFXButton fx:id="btnClear" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="341.0" onAction="#btnClearOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Clear" />
+                              <JFXButton fx:id="btnDelete" alignment="CENTER" contentDisplay="CENTER" layoutX="188.0" layoutY="341.0" onAction="#btnDeleteOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Delete" />
+                              <JFXButton fx:id="btnCheckIn" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="408.0" onAction="#btnCheckInOnAction" prefHeight="34.0" prefWidth="106.0" style="-fx-background-color: #374151;" text="Check-In" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="roomsPane" layoutX="366.0" layoutY="14.0" prefHeight="575.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+                           <children>
+                              <TableView fx:id="tblRooms" layoutX="12.0" layoutY="89.0" prefHeight="472.0" prefWidth="598.0" style="-fx-background-radius: 10px;">
+                                <columns>
+                                  <TableColumn fx:id="colRoomNumber" prefWidth="114.4000244140625" text="Room #" />
+                                  <TableColumn fx:id="colRoomType" prefWidth="155.99993896484375" text="Room Type" />
+                                    <TableColumn fx:id="colRoomStatus" prefWidth="192.80010986328125" text="Availability Status" />
+                                    <TableColumn fx:id="colRoomPrice" prefWidth="136.0" text="Price" />
+                                </columns>
+                              </TableView>
+                              <JFXTextField fx:id="txtSearchRoom" focusColor="#537e90" layoutX="14.0" layoutY="27.0" prefHeight="30.0" prefWidth="161.0" promptText="Search">
+                                 <font>
+                                    <Font name="Roboto Regular" size="16.0" />
+                                 </font>
+                              </JFXTextField>
+                              <FontAwesomeIconView fx:id="searchRoomIcon" fill="#537e90c4" glyphName="SEARCH" layoutX="157.0" layoutY="50.0" onDragDetected="#searchRoomIconOnAction" size="1.5em" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="customerPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" visible="false">
+                     <children>
+                        <TableView fx:id="tblCustomers" layoutX="26.0" layoutY="140.0" prefHeight="428.0" prefWidth="948.0">
+                          <columns>
+                            <TableColumn fx:id="colCusId" prefWidth="109.60000610351562" text="Customer #" />
+                            <TableColumn fx:id="colCusName" prefWidth="217.60003662109375" text="Name" />
+                              <TableColumn fx:id="colCusPhone" prefWidth="163.20001220703125" text="Phone #" />
+                              <TableColumn fx:id="colLoyalty" prefWidth="149.5999755859375" text="Loyalty Points" />
+                              <TableColumn fx:id="colChechedIn" prefWidth="161.60009765625" text="Checked in" />
+                              <TableColumn fx:id="colCheckedOut" prefWidth="154.4000244140625" text="checkked out" />
+                          </columns>
+                        </TableView>
+                        <JFXTextField fx:id="txtSearchCustomer" layoutX="26.0" layoutY="35.0" prefHeight="34.0" prefWidth="209.0" promptText="Search Customer" />
+                        <FontAwesomeIconView fx:id="searchICusIcon" glyphName="SEARCH" layoutX="210.0" layoutY="58.0" onDragDetected="#searchCusIconOnAction" size="1.5em" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </children>
 </AnchorPane>
