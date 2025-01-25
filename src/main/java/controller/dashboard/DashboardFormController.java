@@ -28,9 +28,6 @@ import java.util.ResourceBundle;
 public class DashboardFormController implements Initializable {
 
     @FXML
-    private TableColumn<?, ?> ColRoomStatus;
-
-    @FXML
     private JFXComboBox<?> availableRooms_comboRoomType;
 
     @FXML
@@ -67,37 +64,58 @@ public class DashboardFormController implements Initializable {
     private Button btnLogout;
 
     @FXML
+    private Button btnReservations;
+
+    @FXML
     private JFXButton btnUpdate;
 
     @FXML
-    private TableColumn colChechedIn;
+    private TableColumn<?, ?> colCheckedIn;
 
     @FXML
-    private TableColumn colCheckedOut;
+    private TableColumn<?, ?> colCheckedOut;
 
     @FXML
-    private TableColumn colCusId;
+    private TableColumn<?, ?> colCusId;
 
     @FXML
-    private TableColumn colCusName;
+    private TableColumn<?, ?> colCusNIC;
 
     @FXML
-    private TableColumn colCusPhone;
+    private TableColumn<?, ?> colCusName;
 
     @FXML
-    private TableColumn colLoyalty;
+    private TableColumn<?, ?> colCusPhone;
 
     @FXML
-    private TableColumn colRoomNumber;
+    private TableColumn<?, ?> colCustomerIdtblR;
 
     @FXML
-    private TableColumn colRoomPrice;
+    private TableColumn<?, ?> colLoyalty;
 
     @FXML
-    private TableColumn colRoomType;
+    private TableColumn<?, ?> colReservationId;
 
     @FXML
-    private TableColumn colRoomStatus;
+    private TableColumn<?, ?> colReservationStatus;
+
+    @FXML
+    private TableColumn<?, ?> colRoomNumber;
+
+    @FXML
+    private TableColumn<?, ?> colRoomNumbertblR;
+
+    @FXML
+    private TableColumn<?, ?> colRoomPrice;
+
+    @FXML
+    private TableColumn<?, ?> colRoomStatus;
+
+    @FXML
+    private TableColumn<?, ?> colRoomType;
+
+    @FXML
+    private TableColumn<?, ?> colTotalAmount;
 
     @FXML
     private AnchorPane customerPane;
@@ -124,10 +142,16 @@ public class DashboardFormController implements Initializable {
     private AnchorPane navPane;
 
     @FXML
+    private AnchorPane reservationPane;
+
+    @FXML
     private AnchorPane roomsPane;
 
     @FXML
     private FontAwesomeIconView searchICusIcon;
+
+    @FXML
+    private FontAwesomeIconView searchReservationIcon;
 
     @FXML
     private FontAwesomeIconView searchRoomIcon;
@@ -136,10 +160,16 @@ public class DashboardFormController implements Initializable {
     private TableView<?> tblCustomers;
 
     @FXML
+    private TableView<?> tblReservations;
+
+    @FXML
     private TableView<Room> tblRooms;
 
     @FXML
     private JFXTextField txtSearchCustomer;
+
+    @FXML
+    private JFXTextField txtSearchReservation;
 
     @FXML
     private JFXTextField txtSearchRoom;
@@ -155,7 +185,7 @@ public class DashboardFormController implements Initializable {
         String status = (String) availableRooms_comboStatus.getSelectionModel().getSelectedItem();
         String price = availableRooms_txtPrice.getText();
 
-        if (roomNumber.isEmpty() || roomType.isEmpty() || status.isEmpty() || price.isEmpty()){
+        if (roomNumber.isEmpty() || roomType==null || status==null || price.isEmpty()){
             new Alert(Alert.AlertType.ERROR,"Please enter valid details").show();
         }else if (AvailableRoomsController.getInstance().isRoomNumberAlreadyExists(roomNumber)){
             new Alert(Alert.AlertType.WARNING,"Room # "+roomNumber+"was already exists").show();
@@ -177,8 +207,10 @@ public class DashboardFormController implements Initializable {
     }
 
     @FXML
-    void btnCheckInOnAction(ActionEvent event) {
-
+    void btnCheckInOnAction(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/check_in.fxml"))));
+        stage.show();
     }
 
     @FXML
@@ -201,7 +233,11 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this room ?").showAndWait();
+        if (option.get().equals(ButtonType.OK) && AvailableRoomsController.getInstance().deleteAvailableRoom(availableRooms_txtRoomNumber.getText())){
+            new Alert(Alert.AlertType.INFORMATION,"Room data Deleted successfully").show();
+            loadRoomsTable();
+        }
     }
 
     @FXML
@@ -209,8 +245,6 @@ public class DashboardFormController implements Initializable {
         Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure ?").showAndWait();
         if (option.get().equals(ButtonType.OK)){
             logOut();
-        }else {
-            return;
         }
     }
 
@@ -222,6 +256,11 @@ public class DashboardFormController implements Initializable {
         if (currentStage != null) {
             currentStage.close();
         }
+    }
+
+    @FXML
+    void btnReservationsOnAction(ActionEvent event) {
+
     }
 
     @FXML
@@ -301,5 +340,9 @@ public class DashboardFormController implements Initializable {
         }
         ObservableList roomTypeObservableList = FXCollections.observableArrayList(roomTypeList);
         availableRooms_comboRoomType.setItems(roomTypeObservableList);
+    }
+
+    public void searchReservationIconOnAction(MouseEvent mouseEvent) {
+
     }
 }

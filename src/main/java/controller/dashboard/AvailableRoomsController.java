@@ -68,4 +68,26 @@ public class AvailableRoomsController {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean deleteAvailableRoom(String roomNumber) {
+        String sql = "DELETE FROM rooms WHERE room_number='"+roomNumber+"'";
+        try {
+            return CrudUtil.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<String> getAvailableRoomNumbers() {
+        ArrayList<String> roomNumberList = new ArrayList<>();
+        try {
+            ResultSet rst = CrudUtil.execute("SELECT room_number FROM rooms WHERE availability_status='Available'");
+            while (rst.next()){
+                roomNumberList.add(rst.getString("room_number"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return roomNumberList;
+    }
 }

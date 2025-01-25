@@ -1,0 +1,36 @@
+.com-jfoenix-controls-JFXButton {
+    -fx-background-radius: 10px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+    -fx-text-fill: white;
+}
+
+#btnReset {
+    -fx-background-color: #f59e0b; /* Amber */
+}
+
+#btnReset:hover {
+    -fx-background-color: #d97706;
+}
+
+#btnReceipt {
+    -fx-background-color: #8b5cf6; /* Purple */
+}
+
+#btnReceipt:hover {
+    -fx-background-color: #7c3aed;
+}
+
+#btnCheckIn {
+    -fx-background-color: #10b981; /* Green */
+}
+
+#btnCheckIn:hover {
+    -fx-background-color: #059669;
+}
+
+.com-jfoenix-controls-JFXButton:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}

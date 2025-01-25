@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.checkIn.CheckInFormController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="489.0" prefWidth="379.0" style="-fx-background-color: #fff; -fx-background-radius: 10;" stylesheets="@../assets/css/checkIn.css">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Check-In">
+                     <font>
+                        <Font name="Berlin Sans FB" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="KEY" size="3em" />
+                     </graphic>
+                  </Label>
+                  <Label layoutX="214.0" layoutY="22.0" text="Reservation # :">
+                     <font>
+                        <Font name="Tahoma" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblReservationId" layoutX="321.0" layoutY="22.0" prefHeight="18.0" prefWidth="44.0" text="1">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="txtNIC" layoutX="33.0" layoutY="87.0" promptText="Customer NIC" />
+                  <JFXTextField fx:id="txtPhoneNumber" layoutX="33.0" layoutY="156.0" promptText="Phone Number" />
+                  <JFXTextField fx:id="txtCusName" layoutX="211.0" layoutY="87.0" promptText="Customer Name" />
+                  <DatePicker fx:id="checkinDatePicker" layoutX="33.0" layoutY="249.0" prefHeight="26.0" prefWidth="135.0" promptText="Check-In Date" />
+                  <DatePicker fx:id="checkOutDatePicker" layoutX="211.0" layoutY="249.0" prefHeight="26.0" prefWidth="135.0" promptText="Check-Out Date" />
+                  <JFXButton fx:id="btnReset" layoutX="38.0" layoutY="410.0" onAction="#btnResetOnAction" prefHeight="36.0" prefWidth="90.0" style="-fx-background-color: #f59e0b;" styleClass="com-jfoenix-controls-JFXButton" stylesheets="@../assets/css/checkIn.css" text="Reset" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnReceipt" alignment="CENTER" layoutX="148.0" layoutY="410.0" onAction="#btnReceiptOnAction" prefHeight="36.0" prefWidth="89.0" style="-fx-background-color: #8b5cf6;" styleClass="com-jfoenix-controls-JFXButton" stylesheets="@../assets/css/checkIn.css" text="Receipt" textFill="WHITE">
+                     <font>
+                        <Font name="Montserrat Regular" size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnCheckIn" alignment="CENTER" layoutX="256.0" layoutY="410.0" onAction="#btnCheckInOnAction" prefHeight="36.0" prefWidth="89.0" style="-fx-background-color: #10b981;" styleClass="com-jfoenix-controls-JFXButton" stylesheets="@../assets/css/checkIn.css" text="Check-In" textFill="WHITE">
+                     <font>
+                        <Font name="Montserrat Regular" size="15.0" />
+                     </font>
+                  </JFXButton>
+                  <ImageView fitHeight="36.0" fitWidth="53.0" layoutX="83.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/check-in.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="36.0" fitWidth="61.0" layoutX="253.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/images/checkout.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="178.0" layoutY="313.0" prefHeight="22.0" prefWidth="119.0" text="Total Days       :">
+                     <font>
+                        <Font name="Montserrat Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="178.0" layoutY="350.0" prefHeight="22.0" prefWidth="119.0" text="Total Amount :">
+                     <font>
+                        <Font name="Montserrat Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalDays" layoutX="304.0" layoutY="314.0" prefHeight="22.0" prefWidth="70.0" />
+                  <Label fx:id="lblTotalAmount" layoutX="304.0" layoutY="350.0" prefHeight="22.0" prefWidth="70.0" />
+                  <JFXComboBox fx:id="comboAvailableRooms" layoutX="211.0" layoutY="155.0" prefHeight="26.0" prefWidth="135.0" promptText="Available Rooms" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

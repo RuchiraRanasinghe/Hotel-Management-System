@@ -66,6 +66,11 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button fx:id="btnReservations" layoutX="18.0" layoutY="448.0" mnemonicParsing="false" onAction="#btnReservationsOnAction" prefHeight="42.0" prefWidth="198.0" text="Reservations">
+                           <graphic>
+                              <FontAwesomeIconView fill="#f9fafb" glyphName="LIST" size="20" />
+                           </graphic>
+                        </Button>
 
                      </children>
                      <opaqueInsets>
@@ -170,18 +175,34 @@
                   </AnchorPane>
                   <AnchorPane fx:id="customerPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" visible="false">
                      <children>
-                        <TableView fx:id="tblCustomers" layoutX="26.0" layoutY="140.0" prefHeight="428.0" prefWidth="948.0">
+                        <TableView fx:id="tblCustomers" layoutX="26.0" layoutY="140.0" prefHeight="428.0" prefWidth="778.0">
                           <columns>
-                            <TableColumn fx:id="colCusId" prefWidth="109.60000610351562" text="Customer #" />
-                            <TableColumn fx:id="colCusName" prefWidth="217.60003662109375" text="Name" />
-                              <TableColumn fx:id="colCusPhone" prefWidth="163.20001220703125" text="Phone #" />
-                              <TableColumn fx:id="colLoyalty" prefWidth="149.5999755859375" text="Loyalty Points" />
-                              <TableColumn fx:id="colChechedIn" prefWidth="161.60009765625" text="Checked in" />
-                              <TableColumn fx:id="colCheckedOut" prefWidth="154.4000244140625" text="checkked out" />
+                            <TableColumn fx:id="colCusId" prefWidth="109.60000610351562" text="Customer ID" />
+                              <TableColumn fx:id="colCusNIC" prefWidth="167.199951171875" text="NIC" />
+                            <TableColumn fx:id="colCusName" prefWidth="196.0" text="Name" />
+                              <TableColumn fx:id="colCusPhone" prefWidth="164.0" text="Phone #" />
+                              <TableColumn fx:id="colLoyalty" prefWidth="140.80023193359375" text="Loyalty Points" />
                           </columns>
                         </TableView>
                         <JFXTextField fx:id="txtSearchCustomer" layoutX="26.0" layoutY="35.0" prefHeight="34.0" prefWidth="209.0" promptText="Search Customer" />
                         <FontAwesomeIconView fx:id="searchICusIcon" glyphName="SEARCH" layoutX="210.0" layoutY="58.0" onDragDetected="#searchCusIconOnAction" size="1.5em" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="reservationPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" visible="false">
+                     <children>
+                        <TableView fx:id="tblReservations" layoutX="26.0" layoutY="146.0" prefHeight="428.0" prefWidth="948.0">
+                          <columns>
+                            <TableColumn fx:id="colReservationId" prefWidth="109.60003662109375" text="Reservation ID" />
+                            <TableColumn fx:id="colCustomerIdtblR" prefWidth="111.20004272460938" text="Customer ID" />
+                              <TableColumn fx:id="colRoomNumbertblR" prefWidth="137.5999755859375" text="Room #" />
+                              <TableColumn fx:id="colCheckedIn" prefWidth="169.5999755859375" text="Check-In Date" />
+                              <TableColumn fx:id="colCheckedOut" prefWidth="151.20001220703125" text="Check-Out Date" />
+                              <TableColumn fx:id="colTotalAmount" minWidth="0.0" prefWidth="131.20013427734375" text="Total Payment" />
+                              <TableColumn fx:id="colReservationStatus" minWidth="0.0" prefWidth="143.199951171875" text="Reservation Status" />
+                          </columns>
+                        </TableView>
+                        <JFXTextField fx:id="txtSearchReservation" layoutX="26.0" layoutY="22.0" prefHeight="39.0" prefWidth="209.0" promptText="Search reservation" />
+                        <FontAwesomeIconView fx:id="searchReservatIonicon" glyphName="SEARCH" layoutX="217.0" layoutY="48.0" onDragDetected="#searchReservationIconOnAction" size="1.5em" />
                      </children>
                   </AnchorPane>
                </children>

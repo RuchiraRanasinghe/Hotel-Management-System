@@ -22,7 +22,7 @@
 }
 
 /* Navigation Buttons */
-#btnDashboard, #btnAvailableRooms, #btnCustomers {
+#btnDashboard, #btnAvailableRooms, #btnCustomers, #btnReservations {
     -fx-background-color: transparent;
     -fx-text-fill: #f9fafb;
     -fx-font-size: 14px;
@@ -36,13 +36,13 @@
     -fx-transition: all 0.3s ease;
 }
 
-#btnDashboard:hover, #btnAvailableRooms:hover, #btnCustomers:hover {
+#btnDashboard:hover, #btnAvailableRooms:hover, #btnCustomers:hover, #btnReservations:hover {
     -fx-background-color: #4b5563;
     -fx-border-color: #f9fafb;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 0);
 }
 
-#btnDashboard:pressed, #btnAvailableRooms:pressed, #btnCustomers:pressed {
+#btnDashboard:pressed, #btnAvailableRooms:pressed, #btnCustomers:pressed, #btnReservations:pressed {
     -fx-background-color: #6b7280;
 }
 
