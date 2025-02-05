@@ -1,4 +1,4 @@
-package controller.dashboard;
+package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -17,7 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.Room;
+import dto.Room;
+import service.custom.impl.AvailableRoomsServiceImpl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -187,10 +188,10 @@ public class DashboardFormController implements Initializable {
 
         if (roomNumber.isEmpty() || roomType==null || status==null || price.isEmpty()){
             new Alert(Alert.AlertType.ERROR,"Please enter valid details").show();
-        }else if (AvailableRoomsController.getInstance().isRoomNumberAlreadyExists(roomNumber)){
+        }else if (AvailableRoomsServiceImpl.getInstance().isRoomNumberAlreadyExists(roomNumber)){
             new Alert(Alert.AlertType.WARNING,"Room # "+roomNumber+"was already exists").show();
         }else {
-            if (AvailableRoomsController.getInstance().addNewRoom(
+            if (AvailableRoomsServiceImpl.getInstance().addNewRoom(
                     new Room(roomNumber,roomType,status,Double.parseDouble(price))
             )){
                 new Alert(Alert.AlertType.INFORMATION,"New room added successfully !").show();
@@ -234,7 +235,7 @@ public class DashboardFormController implements Initializable {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete this room ?").showAndWait();
-        if (option.get().equals(ButtonType.OK) && AvailableRoomsController.getInstance().deleteAvailableRoom(availableRooms_txtRoomNumber.getText())){
+        if (option.get().equals(ButtonType.OK) && AvailableRoomsServiceImpl.getInstance().deleteAvailableRoom(availableRooms_txtRoomNumber.getText())){
             new Alert(Alert.AlertType.INFORMATION,"Room data Deleted successfully").show();
             loadRoomsTable();
         }
@@ -265,7 +266,7 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        if (AvailableRoomsController.getInstance().updateAvailableRoom(
+        if (AvailableRoomsServiceImpl.getInstance().updateAvailableRoom(
                 new Room(
                         availableRooms_txtRoomNumber.getText(),
                         (String) availableRooms_comboRoomType.getSelectionModel().getSelectedItem(),
@@ -311,7 +312,7 @@ public class DashboardFormController implements Initializable {
     }
 
     private void loadRoomsTable() {
-        ArrayList<Room> availableRooms = AvailableRoomsController.getInstance().getAvailableRooms();
+        ArrayList<Room> availableRooms = AvailableRoomsServiceImpl.getInstance().getAvailableRooms();
         ObservableList<Room> roomsObservableList = FXCollections.observableArrayList();
         availableRooms.forEach(room -> {
             roomsObservableList.add(room);

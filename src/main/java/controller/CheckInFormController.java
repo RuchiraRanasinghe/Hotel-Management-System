@@ -1,23 +1,27 @@
-package controller.checkIn;
+package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import controller.dashboard.AvailableRoomsController;
-import controller.dashboard.CustomerController;
-import controller.dashboard.ReservationController;
+import javafx.event.Event;
+import service.ServiceFactory;
+import service.custom.AvailableRoomsService;
+import service.custom.CheckInService;
+import service.custom.CustomerService;
+import service.custom.ReservationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import model.Customer;
-import model.Reservation;
+import dto.Customer;
+import dto.Reservation;
+import util.ServiceType;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 public class CheckInFormController implements Initializable {
@@ -58,6 +62,11 @@ public class CheckInFormController implements Initializable {
     @FXML
     private Label lblTotalDays;
 
+    CheckInService checkInService = ServiceFactory.getInstance().getServiceType(ServiceType.CHECKIN);
+    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+    ReservationService reservationService = ServiceFactory.getInstance().getServiceType(ServiceType.RESERVATION);
+    AvailableRoomsService availableRoomsService = ServiceFactory.getInstance().getServiceType(ServiceType.AVAILABLEROOMS);
+
     @FXML
     void btnCheckInOnAction(ActionEvent event) {
         String customerNIC = txtNIC.getText();
@@ -70,9 +79,8 @@ public class CheckInFormController implements Initializable {
         if (customerNIC.isEmpty() || customerName.isEmpty() || cusPhoneNumber.isEmpty() || selectedRoom.isEmpty() || checkInDate.isEmpty() || checkOutDate.isEmpty()){
             new Alert(Alert.AlertType.WARNING,"Please enter valid details !").show();
         }else {
-            setTotalDays(checkInDate,checkOutDate);
-            if (!CustomerController.getInstance().isCustomerAlreadyExists(txtNIC.getText())){
-                CustomerController.getInstance().addNewCustomer(new Customer(
+            if (!customerService.isCustomerAlreadyExists(txtNIC.getText())){
+                customerService.addNewCustomer(new Customer(
                         0,
                         customerNIC,
                         customerName,
@@ -80,25 +88,18 @@ public class CheckInFormController implements Initializable {
                         0
                 ));
                 new Alert(Alert.AlertType.INFORMATION,"New Customer added successfully").show();
-            } else if (ReservationController.getInstance().createNewReservation(new Reservation(
+            }
+            if (reservationService.createNewReservation(new Reservation(
                     0,
                     customerNIC,
                     selectedRoom,
-                    checkInDate,
-                    checkOutDate,
+                    String.valueOf(checkinDatePicker.getValue()),
+                    String.valueOf(checkOutDatePicker.getValue()),
                     Double.parseDouble(lblTotalAmount.getText()),
                     "Confirmed"
             ))){
                 new Alert(Alert.AlertType.INFORMATION,"Reservation added successfully").show();
             }
-        }
-    }
-
-    private void setTotalDays(String checkInDate, String checkOutDate) {
-        if (checkOutDate.compareTo(checkInDate) < 0){
-            new Alert(Alert.AlertType.ERROR,"Invalid check-out date");
-        }else {
-            lblTotalDays.setText(String.valueOf(checkOutDate.compareTo(checkInDate)));
         }
     }
 
@@ -119,18 +120,37 @@ public class CheckInFormController implements Initializable {
     }
 
     private void loadComboAvailableRooms() {
-        for (String roomNumber : AvailableRoomsController.getInstance().getAvailableRoomNumbers()){
+        for (String roomNumber : availableRoomsService.getAvailableRoomNumbers()){
             comboAvailableRooms.getItems().add(roomNumber);
         }
     }
 
     private void setNewReservationId() {
-        String lastReservationId = CheckInController.getInstance().getNewReservationId();
+        String lastReservationId = checkInService.getNewReservationId();
         if (lastReservationId==null){
             lblReservationId.setText("1");
         }else {
             int newReservationId = Integer.parseInt(lastReservationId) + 1;
             lblReservationId.setText(String.valueOf(newReservationId));
+        }
+    }
+
+    public void checkOutDatePickerOnAction(Event event) {
+        LocalDate checkInDate = checkinDatePicker.getValue();
+        LocalDate checkOutDate = checkOutDatePicker.getValue();
+        double NIGHTLY_RATE = 1000.0;
+
+        if (checkInDate != null && checkOutDate != null) {
+            if (!checkOutDate.isAfter(checkInDate)){
+                new Alert(Alert.AlertType.ERROR,"Invalid check-out date");
+            }else {
+                long numberOfNights = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+                double totalAmount = numberOfNights * NIGHTLY_RATE;
+                lblTotalDays.setText(String.valueOf(numberOfNights));
+                lblTotalAmount.setText(String.format("%.2f", totalAmount));
+            }
+        } else {
+            lblTotalAmount.setText("0.00");
         }
     }
 }

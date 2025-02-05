@@ -1,19 +1,21 @@
-package controller.dashboard;
+package service.custom.impl;
 
-import model.Customer;
+import dto.Customer;
+import service.custom.CustomerService;
 import util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CustomerController {
-    private static CustomerController instance;
-    private CustomerController(){}
+public class CustomerServiceImpl implements CustomerService {
+    private static CustomerServiceImpl instance;
+    private CustomerServiceImpl(){}
 
-    public static CustomerController getInstance(){
-        return instance == null ? instance=new CustomerController() : instance;
+    public static CustomerServiceImpl getInstance(){
+        return instance == null ? instance=new CustomerServiceImpl() : instance;
     }
 
+    @Override
     public boolean isCustomerAlreadyExists(String NIC) {
         String sql = "SELECT customer_NIC FROM customers WHERE customer_NIC='"+NIC+"'";
         try {
@@ -24,6 +26,7 @@ public class CustomerController {
         }
     }
 
+    @Override
     public void addNewCustomer(Customer customer) {
         String sql = "INSERT INTO customers (customer_NIC,name,contact_details) VALUES (?,?,?)";
         try {

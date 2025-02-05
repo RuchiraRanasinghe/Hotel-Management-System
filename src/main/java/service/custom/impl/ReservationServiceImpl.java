@@ -1,18 +1,20 @@
-package controller.dashboard;
+package service.custom.impl;
 
-import model.Reservation;
+import dto.Reservation;
+import service.custom.ReservationService;
 import util.CrudUtil;
 
 import java.sql.SQLException;
 
-public class ReservationController {
-    private static ReservationController instance;
-    private ReservationController(){}
+public class ReservationServiceImpl implements ReservationService {
+    private static ReservationServiceImpl instance;
+    private ReservationServiceImpl(){}
 
-    public static ReservationController getInstance(){
-        return instance == null ? instance=new ReservationController() : instance;
+    public static ReservationServiceImpl getInstance(){
+        return instance == null ? instance=new ReservationServiceImpl() : instance;
     }
 
+    @Override
     public boolean createNewReservation(Reservation reservation) {
         String sql = "INSERT INTO reservations (customer_NIC,room_number,check_in_date,check_out_date,total_amount) VALUES (?,?,?,?,?)";
         try {

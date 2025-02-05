@@ -1,18 +1,20 @@
-package controller.checkIn;
+package service.custom.impl;
 
+import service.custom.CheckInService;
 import util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CheckInController {
-    private static CheckInController instance;
-    private CheckInController(){}
+public class CheckInServiceImpl implements CheckInService {
+    private static CheckInServiceImpl instance;
+    private CheckInServiceImpl(){}
 
-    public static CheckInController getInstance(){
-        return instance == null ? instance=new CheckInController():instance;
+    public static CheckInServiceImpl getInstance(){
+        return instance == null ? instance=new CheckInServiceImpl():instance;
     }
 
+    @Override
     public String getNewReservationId() {
         String sql = "SELECT reservation_id FROM reservations order by reservation_id desc limit 1";
         try {

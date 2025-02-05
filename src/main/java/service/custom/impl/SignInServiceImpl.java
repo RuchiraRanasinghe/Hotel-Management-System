@@ -1,16 +1,17 @@
-package controller.signIn;
+package service.custom.impl;
 
 import DBConnection.DBConnection;
-import model.User;
+import dto.User;
+import service.custom.SignInService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SignInController implements SignInService {
-    public static SignInController instance;
-    private SignInController(){}
+public class SignInServiceImpl implements SignInService {
+    public static SignInServiceImpl instance;
+    private SignInServiceImpl(){}
 
-    public static SignInController getInstance(){return instance == null?instance=new SignInController():instance;}
+    public static SignInServiceImpl getInstance(){return instance == null?instance=new SignInServiceImpl():instance;}
 
     @Override
     public boolean authenticateUser(User user) {

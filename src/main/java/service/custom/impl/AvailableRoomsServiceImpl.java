@@ -1,20 +1,22 @@
-package controller.dashboard;
+package service.custom.impl;
 
-import model.Room;
+import dto.Room;
+import service.custom.AvailableRoomsService;
 import util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AvailableRoomsController {
-    private static AvailableRoomsController instance;
-    private AvailableRoomsController(){}
+public class AvailableRoomsServiceImpl implements AvailableRoomsService {
+    private static AvailableRoomsServiceImpl instance;
+    private AvailableRoomsServiceImpl(){}
 
-    public static AvailableRoomsController getInstance(){
-        return instance == null ? instance=new AvailableRoomsController():instance;
+    public static AvailableRoomsServiceImpl getInstance(){
+        return instance == null ? instance=new AvailableRoomsServiceImpl():instance;
     }
 
+    @Override
     public boolean addNewRoom(Room room) {
         String sql = "INSERT INTO rooms (room_number,room_type,price_per_night,availability_status) VALUES (?,?,?,?)";
         try {
@@ -28,6 +30,7 @@ public class AvailableRoomsController {
         }
     }
 
+    @Override
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> availableRoomList = new ArrayList<>();
         try {
@@ -46,6 +49,7 @@ public class AvailableRoomsController {
         return availableRoomList;
     }
 
+    @Override
     public boolean updateAvailableRoom(Room room) {
         String sql = "UPDATE rooms SET room_type=?,availability_status=?,price_per_night=? WHERE room_number=?";
         try {
@@ -59,6 +63,7 @@ public class AvailableRoomsController {
         }
     }
 
+    @Override
     public boolean isRoomNumberAlreadyExists(String roomNumber) {
         String sql = "SELECT room_number FROM rooms WHERE room_number='"+roomNumber+"'";
         try {
@@ -69,6 +74,7 @@ public class AvailableRoomsController {
         }
     }
 
+    @Override
     public boolean deleteAvailableRoom(String roomNumber) {
         String sql = "DELETE FROM rooms WHERE room_number='"+roomNumber+"'";
         try {
@@ -78,6 +84,7 @@ public class AvailableRoomsController {
         }
     }
 
+    @Override
     public ArrayList<String> getAvailableRoomNumbers() {
         ArrayList<String> roomNumberList = new ArrayList<>();
         try {

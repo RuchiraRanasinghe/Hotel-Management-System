@@ -1,4 +1,4 @@
-package controller.signIn;
+package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -9,8 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import model.User;
+import dto.User;
+import service.custom.impl.SignInServiceImpl;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class SignInFormController {
     }
 
     private void loginUser(User newUser) throws IOException {
-        if (SignInController.getInstance().authenticateUser(newUser)){
+        if (SignInServiceImpl.getInstance().authenticateUser(newUser)){
             Stage stage = new Stage();
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"))));
             stage.show();
