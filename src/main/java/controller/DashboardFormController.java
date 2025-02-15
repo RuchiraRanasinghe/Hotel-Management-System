@@ -321,17 +321,17 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void searchCusIconOnAction(MouseEvent event) {
-
+//
     }
 
     @FXML
     void searchRoomIconOnAction(MouseEvent event) {
-
+//
     }
 
     @FXML
     void searchReservationIconOnAction(MouseEvent mouseEvent) {
-
+//
     }
 
     @Override
@@ -343,6 +343,8 @@ public class DashboardFormController implements Initializable {
         loadReservationsTable();
 
         searchCustomer();
+        searchRoom();
+        searchReservation();
 
         tblRooms.getSelectionModel()
                 .selectedItemProperty()
@@ -351,6 +353,66 @@ public class DashboardFormController implements Initializable {
                         setRoomValueToText(newValue);
                     }
                 });
+    }
+
+    private void searchReservation() {
+        FilteredList<Reservation> reservationFilteredList = new FilteredList<>(reservationObservableList, room -> true);
+        txtSearchReservation.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            reservationFilteredList.setPredicate(predicateReservation -> {
+                if (newValue==null || newValue.isEmpty()){
+                    return true;
+                }
+                String searchKey = newValue.toLowerCase();
+                if (predicateReservation.getReservationId().toString().contains(searchKey)){
+                    return true;
+                } else if (predicateReservation.getCustomerNIC().contains(searchKey)) {
+                    return true;
+                } else if (predicateReservation.getRoomNumber().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else if (predicateReservation.getCheckInDate().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateReservation.getCheckOutDate().toString().contains(searchKey)){
+                    return true;
+                } else if (predicateReservation.getTotalAmount().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateReservation.getReservationStatus().contains(searchKey)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<Reservation> reservationSortedList = new SortedList<>(reservationFilteredList);
+        reservationSortedList.comparatorProperty();
+        tblReservations.setItems(reservationSortedList);
+    }
+
+    private void searchRoom() {
+        FilteredList<Room> roomFilteredList = new FilteredList<>(roomsObservableList, room -> true);
+        txtSearchRoom.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            roomFilteredList.setPredicate(predicateRoom -> {
+                if (newValue==null || newValue.isEmpty()){
+                    return true;
+                }
+                String searchKey = newValue.toLowerCase();
+                if (predicateRoom.getRoomNumber().toLowerCase().contains(searchKey)){
+                    return true;
+                } else if (predicateRoom.getRoomType().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else if (predicateRoom.getPrice().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateRoom.getStatus().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<Room> roomSortedList = new SortedList<>(roomFilteredList);
+        roomSortedList.comparatorProperty();
+        tblRooms.setItems(roomSortedList);
     }
 
     private void searchCustomer() {
@@ -388,9 +450,10 @@ public class DashboardFormController implements Initializable {
         availableRooms_txtPrice.setText(String.valueOf(newValue.getPrice()));
     }
 
+    private ObservableList<Room> roomsObservableList;
     private void loadRoomsTable() {
         ArrayList<Room> availableRooms = availableRoomsService.getAvailableRooms();
-        ObservableList<Room> roomsObservableList = FXCollections.observableArrayList();
+        roomsObservableList = FXCollections.observableArrayList();
         availableRooms.forEach(room -> {
             roomsObservableList.add(room);
         });
@@ -418,9 +481,10 @@ public class DashboardFormController implements Initializable {
         colLoyalty.setCellValueFactory(new PropertyValueFactory<>("loyaltyPoints"));
     }
 
+    ObservableList<Reservation> reservationObservableList;
     private void loadReservationsTable() {
         List<Reservation> allReservations = reservationService.getAllReservations();
-        ObservableList<Reservation> reservationObservableList = FXCollections.observableArrayList();
+        reservationObservableList = FXCollections.observableArrayList();
         allReservations.forEach(reservation -> {
             reservationObservableList.add(reservation);
         });
