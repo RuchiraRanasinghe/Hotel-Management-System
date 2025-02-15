@@ -3,6 +3,7 @@ package service.custom;
 import dto.Room;
 import service.SuperService;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public interface AvailableRoomsService extends SuperService {
@@ -12,4 +13,5 @@ public interface AvailableRoomsService extends SuperService {
     boolean isRoomNumberAlreadyExists(String roomNumber);
     boolean deleteAvailableRoom(String roomNumber);
     ArrayList<String> getAvailableRoomNumbers();
+    Double getPricePerNight(String roomNumber);
 }

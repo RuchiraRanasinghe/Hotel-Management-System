@@ -6,6 +6,8 @@ import util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
     private static CustomerServiceImpl instance;
@@ -37,5 +39,25 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        List<Customer> customerList = new ArrayList<>();
+        try {
+            ResultSet rst = CrudUtil.execute("SELECT * FROM customers");
+            while (rst.next()){
+                customerList.add(new Customer(
+                        rst.getInt(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4),
+                        rst.getInt(5)
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return customerList;
     }
 }

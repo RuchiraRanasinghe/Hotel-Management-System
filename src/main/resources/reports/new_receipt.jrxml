@@ -1,0 +1,152 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="new_receipt" language="java" columnCount="1" pageWidth="226" pageHeight="425" orientation="Landscape" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0232b4e7-7bc4-418a-b884-0277a5a14a4f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<query language="SQL"><![CDATA[SELECT 
+    r.*,
+    c.name AS customer_name,
+    rm.room_type AS room_type
+FROM 
+    reservations r
+JOIN 
+    customers c ON r.customer_NIC = c.customer_NIC
+JOIN 
+    rooms rm ON r.room_number = rm.room_number
+ORDER BY 
+    r.reservation_id DESC
+LIMIT 1
+]]></query>
+	<field name="reservation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="reservation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="reservation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="customer_NIC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="customer_NIC"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_NIC"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="room_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="check_in_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="check_in_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="check_in_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="check_out_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="check_out_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="check_out_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="total_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="reservation_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reservation_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="reservation_status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reservations"/>
+	</field>
+	<field name="customer_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customers"/>
+	</field>
+	<field name="room_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rooms"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="95" splitType="Stretch">
+		<element kind="staticText" uuid="053427b5-6907-4488-aa75-e14d697668c0" x="3" y="18" width="180" height="41" fontName="Harlow Solid Italic" fontSize="28.0" hTextAlign="Center">
+			<text><![CDATA[Marriot Hotel]]></text>
+		</element>
+		<element kind="staticText" uuid="2941a3ee-59e5-4093-a9eb-f6c710d0ace5" x="70" y="0" width="56" height="10" fontSize="7.0" vTextAlign="Middle">
+			<text><![CDATA[Customer NIC :]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="03f28607-2938-4619-871d-b03353a5df3e"/>
+		</element>
+		<element kind="textField" uuid="5a86d086-0ccd-4893-81a7-fc53d64aa260" x="126" y="0" width="60" height="10" fontSize="7.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{customer_NIC}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="03f28607-2938-4619-871d-b03353a5df3e"/>
+		</element>
+		<element kind="line" uuid="1abed065-0754-4460-b108-58c49ad15ecb" key="" stretchType="ContainerHeight" x="-10" y="90" width="210" height="1" forecolor="#46474A" backcolor="#0D0B0B" printRepeatedValues="false">
+			<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+			<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+			<pen lineColor="#0A0A0A"/>
+		</element>
+	</title>
+	<pageHeader height="15" splitType="Stretch">
+		<element kind="staticText" uuid="a1f8638c-1f37-44b3-9412-9d918d2cd314" x="-10" y="0" width="40" height="10" fontName="Arial" fontSize="7.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Room #]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ff7fda4-8f70-45d1-a4eb-e7111908e746"/>
+		</element>
+		<element kind="staticText" uuid="757c76ec-c69f-4554-bf7b-ec4ad1fc157b" x="30" y="0" width="40" height="10" fontName="Arial" fontSize="7.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Room Type]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d38202a-907b-48f0-a1a0-330fcb8a1ae7"/>
+		</element>
+		<element kind="staticText" uuid="0292da3a-2fc3-4126-b21f-962037a9afad" x="70" y="0" width="60" height="10" fontName="Arial" fontSize="7.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Check In]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dfa498ae-b3b1-47ef-a0ef-dc4f79c36ff1"/>
+		</element>
+		<element kind="staticText" uuid="41dc3d5c-f5b3-443a-a384-c8bce60dc0dc" x="130" y="0" width="70" height="10" fontName="Arial" fontSize="7.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Check Out]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab1445cc-4e19-4a10-96d8-0637a143f7cb"/>
+		</element>
+	</pageHeader>
+	<columnHeader height="28" splitType="Stretch">
+		<element kind="textField" uuid="ac91b89d-4497-4136-af21-f1a60ad0c7b5" x="70" y="4" width="60" height="20" fontName="Arial" fontSize="7.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{check_in_date}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dfa498ae-b3b1-47ef-a0ef-dc4f79c36ff1"/>
+		</element>
+		<element kind="textField" uuid="74ac65a7-df1d-4369-a44c-bea0bbe53963" x="-10" y="4" width="40" height="20" fontName="Arial" fontSize="7.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{room_number}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ff7fda4-8f70-45d1-a4eb-e7111908e746"/>
+		</element>
+		<element kind="textField" uuid="2820c093-3ec6-45b6-903c-28d6378f8d62" x="130" y="4" width="70" height="20" fontName="Arial" fontSize="7.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{check_out_date}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab1445cc-4e19-4a10-96d8-0637a143f7cb"/>
+		</element>
+		<element kind="textField" uuid="9a9d76f6-ace9-4843-bf4c-19367d7b8563" x="30" y="4" width="40" height="20" fontName="Arial" fontSize="7.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{room_type}]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d38202a-907b-48f0-a1a0-330fcb8a1ae7"/>
+		</element>
+		<element kind="line" uuid="68c4d04b-1edc-4fb1-a595-01ff0f547721" key="" stretchType="NoStretch" mode="Opaque" x="-9" y="0" width="210" height="1" printRepeatedValues="false">
+			<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+			<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+			<pen lineStyle="Dashed"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<element kind="textField" uuid="618afac6-4f03-4c4e-b51f-981db0ce2e6f" x="140" y="10" width="60" height="20" fontName="Arial" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{total_amount}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="110c71ec-2a9f-4743-84ee-5d0f37d1790d"/>
+			</element>
+			<element kind="staticText" uuid="1d9ca5b0-3c30-41e5-9431-7a4c6727a254" x="60" y="10" width="80" height="20" fontName="Arial" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Total Amount : LKR]]></text>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="110c71ec-2a9f-4743-84ee-5d0f37d1790d"/>
+			</element>
+			<element kind="line" uuid="31dbce86-9dff-48cd-aab0-f8304da6f566" key="" stretchType="NoStretch" mode="Opaque" x="-10" y="0" width="210" height="1" printRepeatedValues="false">
+				<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+				<pen lineStyle="Double"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

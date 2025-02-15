@@ -1,0 +1,5 @@
+package util;
+
+public enum DaoType {
+    AVAILABLEROOMS,CHECKIN,CUSTOMER,RESERVATION,SIGNIN
+}

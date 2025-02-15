@@ -97,4 +97,18 @@ public class AvailableRoomsServiceImpl implements AvailableRoomsService {
         }
         return roomNumberList;
     }
+
+    @Override
+    public Double getPricePerNight(String roomNumber) {
+        String sql = "SELECT price_per_night FROM rooms WHERE room_number='"+roomNumber+"'";
+        try {
+            ResultSet rst = CrudUtil.execute(sql);
+            if (rst.next()){
+                return rst.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0.0;
+    }
 }

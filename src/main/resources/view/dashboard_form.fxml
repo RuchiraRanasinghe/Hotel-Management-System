@@ -19,7 +19,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardFormController">
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardFormController">
    <children>
       <StackPane prefHeight="600.0" prefWidth="1230.0">
          <children>
@@ -132,7 +132,25 @@
                   </AnchorPane>
                   <AnchorPane fx:id="roomsPane" layoutX="230.0" prefHeight="600.0" prefWidth="999.0" style="-fx-background-color: #C2D8D3;">
                      <children>
-                        <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="575.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+                        <AnchorPane fx:id="roomsPane" layoutX="366.0" layoutY="14.0" prefHeight="575.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+                           <children>
+                              <TableView fx:id="tblRooms" layoutX="12.0" layoutY="89.0" prefHeight="472.0" prefWidth="598.0" style="-fx-background-radius: 10px;">
+                                <columns>
+                                  <TableColumn fx:id="colRoomNumber" prefWidth="114.4000244140625" text="Room #" />
+                                  <TableColumn fx:id="colRoomType" prefWidth="155.99993896484375" text="Room Type" />
+                                    <TableColumn fx:id="colRoomStatus" prefWidth="192.80010986328125" text="Availability Status" />
+                                    <TableColumn fx:id="colRoomPrice" prefWidth="136.0" text="Price" />
+                                </columns>
+                              </TableView>
+                              <JFXTextField fx:id="txtSearchRoom" focusColor="#537e90" layoutX="14.0" layoutY="27.0" prefHeight="30.0" prefWidth="161.0" promptText="Search">
+                                 <font>
+                                    <Font name="Roboto Regular" size="16.0" />
+                                 </font>
+                              </JFXTextField>
+                              <FontAwesomeIconView fx:id="searchRoomIcon" fill="#537e90c4" glyphName="SEARCH" layoutX="157.0" layoutY="50.0" onDragDetected="#searchRoomIconOnAction" size="1.5em" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="roomsCrudPane" layoutX="14.0" layoutY="13.0" prefHeight="575.0" prefWidth="340.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                            <children>
                               <JFXTextField fx:id="availableRooms_txtRoomNumber" layoutX="76.0" layoutY="39.0" prefHeight="30.0" prefWidth="187.0" promptText="Room number">
                                  <font>
@@ -151,24 +169,6 @@
                               <JFXButton fx:id="btnClear" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="341.0" onAction="#btnClearOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Clear" />
                               <JFXButton fx:id="btnDelete" alignment="CENTER" contentDisplay="CENTER" layoutX="188.0" layoutY="341.0" onAction="#btnDeleteOnAction" prefHeight="34.0" prefWidth="74.0" style="-fx-background-color: #374151;" text="Delete" />
                               <JFXButton fx:id="btnCheckIn" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="408.0" onAction="#btnCheckInOnAction" prefHeight="34.0" prefWidth="106.0" style="-fx-background-color: #374151;" text="Check-In" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="roomsPane" layoutX="366.0" layoutY="14.0" prefHeight="575.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
-                           <children>
-                              <TableView fx:id="tblRooms" layoutX="12.0" layoutY="89.0" prefHeight="472.0" prefWidth="598.0" style="-fx-background-radius: 10px;">
-                                <columns>
-                                  <TableColumn fx:id="colRoomNumber" prefWidth="114.4000244140625" text="Room #" />
-                                  <TableColumn fx:id="colRoomType" prefWidth="155.99993896484375" text="Room Type" />
-                                    <TableColumn fx:id="colRoomStatus" prefWidth="192.80010986328125" text="Availability Status" />
-                                    <TableColumn fx:id="colRoomPrice" prefWidth="136.0" text="Price" />
-                                </columns>
-                              </TableView>
-                              <JFXTextField fx:id="txtSearchRoom" focusColor="#537e90" layoutX="14.0" layoutY="27.0" prefHeight="30.0" prefWidth="161.0" promptText="Search">
-                                 <font>
-                                    <Font name="Roboto Regular" size="16.0" />
-                                 </font>
-                              </JFXTextField>
-                              <FontAwesomeIconView fx:id="searchRoomIcon" fill="#537e90c4" glyphName="SEARCH" layoutX="157.0" layoutY="50.0" onDragDetected="#searchRoomIconOnAction" size="1.5em" />
                            </children>
                         </AnchorPane>
                      </children>

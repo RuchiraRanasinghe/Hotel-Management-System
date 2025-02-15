@@ -4,8 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import dto.Customer;
+import dto.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,11 +22,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import dto.Room;
+import service.ServiceFactory;
+import service.custom.AvailableRoomsService;
+import service.custom.CheckInService;
+import service.custom.CustomerService;
+import service.custom.ReservationService;
 import service.custom.impl.AvailableRoomsServiceImpl;
+import util.ServiceType;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -146,6 +157,9 @@ public class DashboardFormController implements Initializable {
     private AnchorPane reservationPane;
 
     @FXML
+    private AnchorPane roomsCrudPane;
+
+    @FXML
     private AnchorPane roomsPane;
 
     @FXML
@@ -158,10 +172,10 @@ public class DashboardFormController implements Initializable {
     private FontAwesomeIconView searchRoomIcon;
 
     @FXML
-    private TableView<?> tblCustomers;
+    private TableView<Customer> tblCustomers;
 
     @FXML
-    private TableView<?> tblReservations;
+    private TableView<Reservation> tblReservations;
 
     @FXML
     private TableView<Room> tblRooms;
@@ -178,6 +192,10 @@ public class DashboardFormController implements Initializable {
     private String[] roomType = {"Single", "Double", "Suite"};
     private String[] roomStatus = {"Available", "Occupied"};
 
+    CheckInService checkInService = ServiceFactory.getInstance().getServiceType(ServiceType.CHECKIN);
+    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+    ReservationService reservationService = ServiceFactory.getInstance().getServiceType(ServiceType.RESERVATION);
+    AvailableRoomsService availableRoomsService = ServiceFactory.getInstance().getServiceType(ServiceType.AVAILABLEROOMS);
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
@@ -204,7 +222,12 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnAvailableRoomsOnAction(ActionEvent event) {
-
+        roomsPane.setVisible(true);
+        roomsPane.toFront();
+        roomsCrudPane.setVisible(true);
+        dashboardPane.setVisible(false);
+        customerPane.setVisible(false);
+        reservationPane.setVisible(false);
     }
 
     @FXML
@@ -224,12 +247,22 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnCustomersOnAction(ActionEvent event) {
-
+        customerPane.setVisible(true);
+        customerPane.toFront();
+        roomsPane.setVisible(false);
+        roomsCrudPane.setVisible(false);
+        dashboardPane.setVisible(false);
+        reservationPane.setVisible(false);
     }
 
     @FXML
     void btnDashboardOnAction(ActionEvent event) {
-
+        dashboardPane.setVisible(true);
+        dashboardPane.toFront();
+        roomsPane.setVisible(false);
+        roomsCrudPane.setVisible(false);
+        customerPane.setVisible(false);
+        reservationPane.setVisible(false);
     }
 
     @FXML
@@ -261,12 +294,17 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnReservationsOnAction(ActionEvent event) {
-
+        reservationPane.setVisible(true);
+        reservationPane.toFront();
+        roomsPane.setVisible(false);
+        roomsCrudPane.setVisible(false);
+        dashboardPane.setVisible(false);
+        customerPane.setVisible(false);
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        if (AvailableRoomsServiceImpl.getInstance().updateAvailableRoom(
+        if (availableRoomsService.updateAvailableRoom(
                 new Room(
                         availableRooms_txtRoomNumber.getText(),
                         (String) availableRooms_comboRoomType.getSelectionModel().getSelectedItem(),
@@ -291,11 +329,20 @@ public class DashboardFormController implements Initializable {
 
     }
 
+    @FXML
+    void searchReservationIconOnAction(MouseEvent mouseEvent) {
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadComboRoomType();
         loadComboRoomStatus();
         loadRoomsTable();
+        loadCustomersTable();
+        loadReservationsTable();
+
+        searchCustomer();
 
         tblRooms.getSelectionModel()
                 .selectedItemProperty()
@@ -306,13 +353,43 @@ public class DashboardFormController implements Initializable {
                 });
     }
 
+    private void searchCustomer() {
+        FilteredList<Customer> customerFilteredList = new FilteredList<>(customerObservableList, customer -> true);
+        txtSearchCustomer.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            customerFilteredList.setPredicate(predicateCustomer -> {
+                if (newValue==null || newValue.isEmpty()){
+                    return true;
+                }
+                String searchKey = newValue.toLowerCase();
+                if (predicateCustomer.getCustomerId().toString().contains(searchKey)){
+                    return true;
+                } else if (predicateCustomer.getCustomerNIC().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateCustomer.getName().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else if (predicateCustomer.getPhoneNumber().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateCustomer.getLoyaltyPoints().toString().contains(searchKey)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<Customer> customerSortedList = new SortedList<>(customerFilteredList);
+        customerSortedList.comparatorProperty();
+        tblCustomers.setItems(customerSortedList);
+    }
+
+
     private void setRoomValueToText(Room newValue) {
         availableRooms_txtRoomNumber.setText(newValue.getRoomNumber());
         availableRooms_txtPrice.setText(String.valueOf(newValue.getPrice()));
     }
 
     private void loadRoomsTable() {
-        ArrayList<Room> availableRooms = AvailableRoomsServiceImpl.getInstance().getAvailableRooms();
+        ArrayList<Room> availableRooms = availableRoomsService.getAvailableRooms();
         ObservableList<Room> roomsObservableList = FXCollections.observableArrayList();
         availableRooms.forEach(room -> {
             roomsObservableList.add(room);
@@ -323,6 +400,39 @@ public class DashboardFormController implements Initializable {
         colRoomType.setCellValueFactory(new PropertyValueFactory<>("roomType"));
         colRoomStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colRoomPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    private ObservableList<Customer> customerObservableList;
+    private void loadCustomersTable(){
+        List<Customer> customerList = customerService.getAll();
+        customerObservableList = FXCollections.observableArrayList();
+        customerList.forEach(customer -> {
+            customerObservableList.add(customer);
+        });
+        tblCustomers.setItems(customerObservableList);
+
+        colCusId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        colCusNIC.setCellValueFactory(new PropertyValueFactory<>("customerNIC"));
+        colCusName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCusPhone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        colLoyalty.setCellValueFactory(new PropertyValueFactory<>("loyaltyPoints"));
+    }
+
+    private void loadReservationsTable() {
+        List<Reservation> allReservations = reservationService.getAllReservations();
+        ObservableList<Reservation> reservationObservableList = FXCollections.observableArrayList();
+        allReservations.forEach(reservation -> {
+            reservationObservableList.add(reservation);
+        });
+        tblReservations.setItems(reservationObservableList);
+
+        colReservationId.setCellValueFactory(new PropertyValueFactory<>("reservationId"));
+        colCustomerIdtblR.setCellValueFactory(new PropertyValueFactory<>("customerNIC"));
+        colRoomNumbertblR.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
+        colCheckedIn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
+        colCheckedOut.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
+        colTotalAmount.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
+        colReservationStatus.setCellValueFactory(new PropertyValueFactory<>("reservationStatus"));
     }
 
     private void loadComboRoomStatus() {
@@ -341,9 +451,5 @@ public class DashboardFormController implements Initializable {
         }
         ObservableList roomTypeObservableList = FXCollections.observableArrayList(roomTypeList);
         availableRooms_comboRoomType.setItems(roomTypeObservableList);
-    }
-
-    public void searchReservationIconOnAction(MouseEvent mouseEvent) {
-
     }
 }

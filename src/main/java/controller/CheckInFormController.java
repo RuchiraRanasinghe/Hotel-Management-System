@@ -1,9 +1,14 @@
 package controller;
 
+import DBConnection.DBConnection;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.Event;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import service.ServiceFactory;
 import service.custom.AvailableRoomsService;
 import service.custom.CheckInService;
@@ -19,7 +24,9 @@ import dto.Customer;
 import dto.Reservation;
 import util.ServiceType;
 
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -105,12 +112,26 @@ public class CheckInFormController implements Initializable {
 
     @FXML
     void btnReceiptOnAction(ActionEvent event) {
+        try {
+            JasperDesign design = JRXmlLoader.load("src/main/resources/reports/new_receipt.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(design);
 
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+
+            JasperViewer.viewReport(jasperPrint,false);
+        } catch (JRException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void btnResetOnAction(ActionEvent event) {
-
+        txtNIC.clear();
+        txtCusName.clear();
+        txtPhoneNumber.clear();
+        comboAvailableRooms.getSelectionModel().clearSelection();
+        lblTotalDays.setText("");
+        lblTotalAmount.setText("");
     }
 
     @Override
@@ -138,14 +159,15 @@ public class CheckInFormController implements Initializable {
     public void checkOutDatePickerOnAction(Event event) {
         LocalDate checkInDate = checkinDatePicker.getValue();
         LocalDate checkOutDate = checkOutDatePicker.getValue();
-        double NIGHTLY_RATE = 1000.0;
+        String selectedRoom = String.valueOf(comboAvailableRooms.getSelectionModel().getSelectedItem());
+        Double pricePerNight = availableRoomsService.getPricePerNight(selectedRoom);
 
         if (checkInDate != null && checkOutDate != null) {
             if (!checkOutDate.isAfter(checkInDate)){
                 new Alert(Alert.AlertType.ERROR,"Invalid check-out date");
             }else {
                 long numberOfNights = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
-                double totalAmount = numberOfNights * NIGHTLY_RATE;
+                double totalAmount = numberOfNights * pricePerNight;
                 lblTotalDays.setText(String.valueOf(numberOfNights));
                 lblTotalAmount.setText(String.format("%.2f", totalAmount));
             }
