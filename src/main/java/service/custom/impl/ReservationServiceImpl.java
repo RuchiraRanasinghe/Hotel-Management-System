@@ -1,12 +1,14 @@
 package service.custom.impl;
 
 import dto.Reservation;
+import javafx.scene.chart.XYChart;
 import service.custom.ReservationService;
 import util.CrudUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ReservationServiceImpl implements ReservationService {
@@ -70,5 +72,69 @@ public class ReservationServiceImpl implements ReservationService {
             throw new RuntimeException(e);
         }
         return reservationList;
+    }
+
+    @Override
+    public int getCountBookToday() {
+        int count = 0;
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        String sql = "SELECT COUNT(reservation_id) FROM reservations WHERE check_in_date = '"+sqlDate+"'";
+        try {
+            ResultSet rst = CrudUtil.execute(sql);
+            while (rst.next()) {
+                count = rst.getInt("COUNT(reservation_id)");
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Double getIncomeToday() {
+        Double incomeToday = 0.0;
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        String sql = "SELECT SUM(total_amount) FROM reservations WHERE check_in_date = '"+sqlDate+"'";
+        try {
+            ResultSet rst = CrudUtil.execute(sql);
+            while (rst.next()){
+                incomeToday = rst.getDouble("SUM(total_amount)");
+            }
+            return incomeToday;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Double getTotalIncome() {
+        double totalIncome = 0.0;
+        String sql = "SELECT SUM(total_amount) FROM reservations";
+        try {
+            ResultSet rst = CrudUtil.execute(sql);
+            while (rst.next()){
+                totalIncome = rst.getDouble("SUM(total_amount)");
+            }
+            return totalIncome;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public XYChart.Series getChartData() {
+        String sql = "SELECT check_in_date, SUM(total_amount) AS total_amount FROM reservations GROUP BY check_in_date ORDER BY TIMESTAMP(check_in_date) ASC LIMIT 8";
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            ResultSet rst = CrudUtil.execute(sql);
+            while (rst.next()) {
+                chart.getData().add(new XYChart.Data(rst.getString(1), rst.getInt(2)));
+            }
+            return chart;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

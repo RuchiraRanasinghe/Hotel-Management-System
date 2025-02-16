@@ -104,7 +104,7 @@ public class CheckInFormController implements Initializable {
                     String.valueOf(checkOutDatePicker.getValue()),
                     Double.parseDouble(lblTotalAmount.getText()),
                     "Confirmed"
-            ))){
+            )) && availableRoomsService.setRoomStatusOccupied(selectedRoom)){
                 new Alert(Alert.AlertType.INFORMATION,"Reservation added successfully").show();
             }
         }

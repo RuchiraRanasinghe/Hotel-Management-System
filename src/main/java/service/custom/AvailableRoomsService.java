@@ -14,4 +14,5 @@ public interface AvailableRoomsService extends SuperService {
     boolean deleteAvailableRoom(String roomNumber);
     ArrayList<String> getAvailableRoomNumbers();
     Double getPricePerNight(String roomNumber);
+    boolean setRoomStatusOccupied(String roomNumber);
 }

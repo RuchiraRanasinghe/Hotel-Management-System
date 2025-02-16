@@ -32,10 +32,7 @@ import util.ServiceType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DashboardFormController implements Initializable {
 
@@ -189,8 +186,8 @@ public class DashboardFormController implements Initializable {
     @FXML
     private JFXTextField txtSearchRoom;
 
-    private String[] roomType = {"Single", "Double", "Suite"};
-    private String[] roomStatus = {"Available", "Occupied"};
+    private final String[] roomTypes = {"Single", "Double", "Suite"};
+    private final String[] roomStatus = {"Available", "Occupied"};
 
     CheckInService checkInService = ServiceFactory.getInstance().getServiceType(ServiceType.CHECKIN);
     CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
@@ -233,7 +230,7 @@ public class DashboardFormController implements Initializable {
     @FXML
     void btnCheckInOnAction(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/check_in.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/check_in.fxml")))));
         stage.show();
     }
 
@@ -263,6 +260,9 @@ public class DashboardFormController implements Initializable {
         roomsCrudPane.setVisible(false);
         customerPane.setVisible(false);
         reservationPane.setVisible(false);
+        setCountBookToday();
+        setIncomeToday();
+        loadDashboardChart();
     }
 
     @FXML
@@ -284,7 +284,7 @@ public class DashboardFormController implements Initializable {
 
     private void logOut() throws IOException {
         Stage stage = new Stage();
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/sign_in_form.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/sign_in_form.fxml")))));
         stage.show();
         Stage currentStage = (Stage) btnDashboard.getScene().getWindow();
         if (currentStage != null) {
@@ -346,6 +346,11 @@ public class DashboardFormController implements Initializable {
         searchRoom();
         searchReservation();
 
+        setCountBookToday();
+        setIncomeToday();
+        setTotalIncome();
+        loadDashboardChart();
+
         tblRooms.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observableValue, oldValue, newValue) -> {
@@ -353,6 +358,26 @@ public class DashboardFormController implements Initializable {
                         setRoomValueToText(newValue);
                     }
                 });
+    }
+
+    private void loadDashboardChart() {
+        dashboardAreaChart.getData().clear();
+        dashboardAreaChart.getData().add(reservationService.getChartData());
+    }
+
+    private void setTotalIncome() {
+        Double totalIncome = reservationService.getTotalIncome();
+        dashboardIncomeTotal.setText("LKR "+totalIncome);
+    }
+
+    private void setIncomeToday() {
+        Double incomeToday = reservationService.getIncomeToday();
+        dashboardIncomeToday.setText("LKR "+incomeToday);
+    }
+
+    private void setCountBookToday() {
+        int countBookToday = reservationService.getCountBookToday();
+        dashboardBookToday.setText(String.valueOf(countBookToday));
     }
 
     private void searchReservation() {
@@ -369,9 +394,9 @@ public class DashboardFormController implements Initializable {
                     return true;
                 } else if (predicateReservation.getRoomNumber().toLowerCase().contains(searchKey)) {
                     return true;
-                } else if (predicateReservation.getCheckInDate().toString().contains(searchKey)) {
+                } else if (predicateReservation.getCheckInDate().contains(searchKey)) {
                     return true;
-                } else if (predicateReservation.getCheckOutDate().toString().contains(searchKey)){
+                } else if (predicateReservation.getCheckOutDate().contains(searchKey)){
                     return true;
                 } else if (predicateReservation.getTotalAmount().toString().contains(searchKey)) {
                     return true;
@@ -402,11 +427,7 @@ public class DashboardFormController implements Initializable {
                     return true;
                 } else if (predicateRoom.getPrice().toString().contains(searchKey)) {
                     return true;
-                } else if (predicateRoom.getStatus().toLowerCase().contains(searchKey)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                } else return predicateRoom.getStatus().toLowerCase().contains(searchKey);
             });
         });
 
@@ -425,17 +446,13 @@ public class DashboardFormController implements Initializable {
                 String searchKey = newValue.toLowerCase();
                 if (predicateCustomer.getCustomerId().toString().contains(searchKey)){
                     return true;
-                } else if (predicateCustomer.getCustomerNIC().toString().contains(searchKey)) {
+                } else if (predicateCustomer.getCustomerNIC().contains(searchKey)) {
                     return true;
                 } else if (predicateCustomer.getName().toLowerCase().contains(searchKey)) {
                     return true;
-                } else if (predicateCustomer.getPhoneNumber().toString().contains(searchKey)) {
+                } else if (predicateCustomer.getPhoneNumber().contains(searchKey)) {
                     return true;
-                } else if (predicateCustomer.getLoyaltyPoints().toString().contains(searchKey)) {
-                    return true;
-                }else {
-                    return false;
-                }
+                } else return predicateCustomer.getLoyaltyPoints().toString().contains(searchKey);
             });
         });
 
@@ -454,9 +471,7 @@ public class DashboardFormController implements Initializable {
     private void loadRoomsTable() {
         ArrayList<Room> availableRooms = availableRoomsService.getAvailableRooms();
         roomsObservableList = FXCollections.observableArrayList();
-        availableRooms.forEach(room -> {
-            roomsObservableList.add(room);
-        });
+        roomsObservableList.addAll(availableRooms);
         tblRooms.setItems(roomsObservableList);
 
         colRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
@@ -469,9 +484,7 @@ public class DashboardFormController implements Initializable {
     private void loadCustomersTable(){
         List<Customer> customerList = customerService.getAll();
         customerObservableList = FXCollections.observableArrayList();
-        customerList.forEach(customer -> {
-            customerObservableList.add(customer);
-        });
+        customerObservableList.addAll(customerList);
         tblCustomers.setItems(customerObservableList);
 
         colCusId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -485,9 +498,7 @@ public class DashboardFormController implements Initializable {
     private void loadReservationsTable() {
         List<Reservation> allReservations = reservationService.getAllReservations();
         reservationObservableList = FXCollections.observableArrayList();
-        allReservations.forEach(reservation -> {
-            reservationObservableList.add(reservation);
-        });
+        reservationObservableList.addAll(allReservations);
         tblReservations.setItems(reservationObservableList);
 
         colReservationId.setCellValueFactory(new PropertyValueFactory<>("reservationId"));
@@ -500,19 +511,13 @@ public class DashboardFormController implements Initializable {
     }
 
     private void loadComboRoomStatus() {
-        ArrayList<String> roomStatusList = new ArrayList<>();
-        for (String status : roomStatus){
-            roomStatusList.add(status);
-        }
+        ArrayList<String> roomStatusList = new ArrayList<>(Arrays.asList(roomStatus));
         ObservableList statusObservableList = FXCollections.observableArrayList(roomStatusList);
         availableRooms_comboStatus.setItems(statusObservableList);
     }
 
     private void loadComboRoomType() {
-        ArrayList<String> roomTypeList = new ArrayList<>();
-        for (String type : roomType){
-            roomTypeList.add(type);
-        }
+        ArrayList<String> roomTypeList = new ArrayList<>(Arrays.asList(roomTypes));
         ObservableList roomTypeObservableList = FXCollections.observableArrayList(roomTypeList);
         availableRooms_comboRoomType.setItems(roomTypeObservableList);
     }

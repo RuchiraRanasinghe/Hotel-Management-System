@@ -111,4 +111,14 @@ public class AvailableRoomsServiceImpl implements AvailableRoomsService {
         }
         return 0.0;
     }
+
+    @Override
+    public boolean setRoomStatusOccupied(String roomNumber) {
+        String sql = "UPDATE rooms SET availability_status = 'Occupied' WHERE room_number = '"+roomNumber+"'";
+        try {
+            return CrudUtil.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
