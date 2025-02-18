@@ -1,4 +1,13 @@
 package repository.custom;
 
-public interface AvailableRoomsDao {
+import entity.RoomEntity;
+import repository.CrudDao;
+
+import java.util.ArrayList;
+
+public interface AvailableRoomsDao extends CrudDao<RoomEntity,String> {
+    ArrayList<String> getAvailableRoomNumbers();
+    boolean isRoomNumberAlreadyExists(String roomNumber);
+    Double getPricePerNight(String roomNumber);
+    boolean setRoomStatusOccupied(String roomNumber);
 }

@@ -2,7 +2,12 @@ package service.custom.impl;
 
 import DBConnection.DBConnection;
 import dto.User;
+import entity.UserEntity;
+import org.modelmapper.ModelMapper;
+import repository.DaoFactory;
+import repository.custom.SignInDao;
 import service.custom.SignInService;
+import util.DaoType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,19 +18,10 @@ public class SignInServiceImpl implements SignInService {
 
     public static SignInServiceImpl getInstance(){return instance == null?instance=new SignInServiceImpl():instance;}
 
+    SignInDao signInDao = DaoFactory.getInstance().getDao(DaoType.SIGNIN);
+
     @Override
     public boolean authenticateUser(User user) {
-        try {
-            ResultSet resultSet = DBConnection.getInstance().getConnection().createStatement().executeQuery("SELECT * FROM users WHERE username='" + user.getUsername() + "' AND role='" + user.getRole() + "'");
-            if (resultSet.next()){
-                String password = resultSet.getString(3);
-                if (user.getPassword().equals(password)){
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
+        return signInDao.authenticateUser(new ModelMapper().map(user, UserEntity.class));
     }
 }

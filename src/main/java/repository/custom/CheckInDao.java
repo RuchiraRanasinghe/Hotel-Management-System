@@ -1,4 +1,8 @@
 package repository.custom;
 
-public interface CheckInDao {
+import entity.ReservationEntity;
+import repository.CrudDao;
+
+public interface CheckInDao extends CrudDao<ReservationEntity,Integer> {
+    String getNewReservationId();
 }
