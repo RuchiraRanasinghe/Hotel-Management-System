@@ -1,6 +1,5 @@
 package repository.custom;
 
-import dto.Reservation;
 import entity.ReservationEntity;
 import javafx.scene.chart.XYChart;
 import repository.CrudDao;
@@ -11,4 +10,5 @@ public interface ReservationDao extends CrudDao<ReservationEntity,Integer> {
     Double getIncomeToday();
     Double getTotalIncome();
     XYChart.Series getChartData();
+    boolean cancelReservation(Integer reservationId);
 }

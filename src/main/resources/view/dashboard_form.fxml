@@ -203,6 +203,11 @@
                         </TableView>
                         <JFXTextField fx:id="txtSearchReservation" layoutX="26.0" layoutY="22.0" prefHeight="39.0" prefWidth="209.0" promptText="Search reservation" />
                         <FontAwesomeIconView fx:id="searchReservatIonicon" glyphName="SEARCH" layoutX="217.0" layoutY="48.0" onDragDetected="#searchReservationIconOnAction" size="1.5em" />
+                        <JFXButton fx:id="btnCancelReservation" layoutX="795.0" layoutY="33.0" onAction="#btnCancelReservationOnAction" prefHeight="31.0" prefWidth="178.0" style="-fx-background-color: #374151;" text="Cancel Selected reservation" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
                </children>

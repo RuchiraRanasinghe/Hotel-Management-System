@@ -10,4 +10,5 @@ public interface AvailableRoomsDao extends CrudDao<RoomEntity,String> {
     boolean isRoomNumberAlreadyExists(String roomNumber);
     Double getPricePerNight(String roomNumber);
     boolean setRoomStatusOccupied(String roomNumber);
+    boolean setRoomStatusAvailable(String roomNumber);
 }

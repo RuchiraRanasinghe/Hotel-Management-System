@@ -1,6 +1,5 @@
 package repository.custom.impl;
 
-import dto.Reservation;
 import entity.ReservationEntity;
 import javafx.scene.chart.XYChart;
 import repository.custom.ReservationDao;
@@ -142,6 +141,16 @@ public class ReservationDaoImpl implements ReservationDao {
                 chart.getData().add(new XYChart.Data(rst.getString(1), rst.getInt(2)));
             }
             return chart;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean cancelReservation(Integer reservationId) {
+        String sql = "UPDATE reservations SET reservation_status = 'Canceled' WHERE reservation_id = '"+reservationId+"'";
+        try {
+            return CrudUtil.execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

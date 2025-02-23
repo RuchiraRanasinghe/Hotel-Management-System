@@ -7,13 +7,9 @@ import org.modelmapper.ModelMapper;
 import repository.DaoFactory;
 import repository.custom.ReservationDao;
 import service.custom.ReservationService;
-import util.CrudUtil;
 import util.DaoType;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ReservationServiceImpl implements ReservationService {
@@ -63,5 +59,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public XYChart.Series getChartData() {
         return reservationDao.getChartData();
+    }
+
+    @Override
+    public boolean cancelReservation(Integer reservationId) {
+        return reservationDao.cancelReservation(reservationId);
     }
 }

@@ -55,6 +55,9 @@ public class DashboardFormController implements Initializable {
     private Button btnAvailableRooms;
 
     @FXML
+    private JFXButton btnCancelReservation;
+
+    @FXML
     private JFXButton btnCheckIn;
 
     @FXML
@@ -520,5 +523,14 @@ public class DashboardFormController implements Initializable {
         ArrayList<String> roomTypeList = new ArrayList<>(Arrays.asList(roomTypes));
         ObservableList roomTypeObservableList = FXCollections.observableArrayList(roomTypeList);
         availableRooms_comboRoomType.setItems(roomTypeObservableList);
+    }
+
+    public void btnCancelReservationOnAction(ActionEvent actionEvent) {
+        Reservation reservation = tblReservations.getSelectionModel().getSelectedItem();
+        if (reservationService.cancelReservation(reservation.getReservationId()) && availableRoomsService.setRoomStatusAvailable(reservation.getRoomNumber())){
+                new Alert(Alert.AlertType.CONFIRMATION,"Reservation canceled successfully\nRoom number "+reservation.getRoomNumber()+" is available now.").show();
+                loadRoomsTable();
+                loadReservationsTable();
+            }
     }
 }

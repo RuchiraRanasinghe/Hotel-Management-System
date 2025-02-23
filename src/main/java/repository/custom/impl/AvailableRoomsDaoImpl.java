@@ -65,6 +65,16 @@ public class AvailableRoomsDaoImpl implements AvailableRoomsDao {
         }
     }
 
+    @Override
+    public boolean setRoomStatusAvailable(String roomNumber) {
+        String sql = "UPDATE rooms SET availability_status = 'Available' WHERE room_number = '"+roomNumber+"'";
+        try {
+            return CrudUtil.execute(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public boolean save(RoomEntity entity) {

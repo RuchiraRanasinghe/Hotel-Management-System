@@ -20,4 +20,6 @@ public interface ReservationService extends SuperService {
     Double getTotalIncome();
 
     XYChart.Series getChartData();
+
+    boolean cancelReservation(Integer reservation);
 }

@@ -68,4 +68,9 @@ public class AvailableRoomsServiceImpl implements AvailableRoomsService {
     public boolean setRoomStatusOccupied(String roomNumber) {
         return availableRoomsDao.setRoomStatusOccupied(roomNumber);
     }
+
+    @Override
+    public boolean setRoomStatusAvailable(String roomNumber) {
+        return availableRoomsDao.setRoomStatusAvailable(roomNumber);
+    }
 }
