@@ -247,6 +247,7 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnCustomersOnAction(ActionEvent event) {
+        loadCustomersTable();
         customerPane.setVisible(true);
         customerPane.toFront();
         roomsPane.setVisible(false);
@@ -297,6 +298,7 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     void btnReservationsOnAction(ActionEvent event) {
+        loadReservationsTable();
         reservationPane.setVisible(true);
         reservationPane.toFront();
         roomsPane.setVisible(false);
